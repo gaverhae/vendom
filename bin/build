@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
+cd "$DIR/.."
+
+log=$(mktemp)
+trap "echo 'Something went wrong. Logs of last step:'; cat $log" EXIT
+
+trap - EXIT
+
+echo -n "Building client-side application..."
+mkdir -p target/public/css
+PROD=true lein fig -- -O advanced --build-once dev &>$log
+mkdir -p resources/public/cljs-out
+cp target/public/cljs-out/dev-main.js resources/public/cljs-out/dev-main.js
+if command -v tailwindcss &>$log; then
+  tw=tailwindcss
+elif [ -n "${DYNO:-}" ]; then
+  bindir=$(mktemp -d)
+  tw=$bindir/tailwindcss
+  curl -sSL https://github.com/tailwindlabs/tailwindcss/releases/download/v3.4.3/tailwindcss-linux-x64 > $tw
+  chmod +x $tw
+else
+  echo "Not on Heroku and no tailwindcss; don't know what to do."
+  exit 1
+fi
+$tw -i tailwind.css -o resources/public/css/style.css &>$log
+echo " done."
+
+echo -n "Building server-side application..."
+lein uberjar &>$log
+rm -r resources/public/cljs-out
+rm -rf resources/public/css
+
+echo " done."

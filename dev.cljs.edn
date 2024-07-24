@@ -1,0 +1,5 @@
+;; figwheel build file
+;; https://figwheel.org/docs/create_a_build.html
+^{:css-dirs ["target/public/css"]
+  :open-url "http://localhost:8000"}
+{:main t.core}
