@@ -1,7 +1,6 @@
 (ns ^:figwheel-hooks t.core
   (:require [cljs.core.async :as async]
             [cljs.core.match :refer-macros [match]]
-            [clojure.string :as string]
             [goog.events]
             [reagent.core :as r]
             [reagent.dom.client :as rdc]
