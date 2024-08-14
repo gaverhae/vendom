@@ -27,5 +27,4 @@
                                   [org.clojure/clojurescript "1.11.132"]
                                   [org.clojure/tools.namespace "1.5.0"]
                                   [reagent "1.2.0"]]}}
-  :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]
-            "cljs" ["trampoline" "run" "-m" "figwheel.main" "--" "--build" "dev" "--repl"]})
+  :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]})
