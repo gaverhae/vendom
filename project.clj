@@ -3,13 +3,13 @@
                  [compojure "1.7.1"]
                  [hiccup "2.0.0-RC3"]
                  [http-kit "2.8.0"]
-                 [org.clojure/clojure "1.11.3"]
+                 [org.clojure/clojure "1.11.4"]
                  [org.clojure/core.async "1.6.681"]
                  [org.clojure/core.match "1.1.0"]
-                 [org.slf4j/slf4j-simple "2.0.13"]
+                 [org.slf4j/slf4j-simple "2.0.16"]
                  [ring/ring-defaults "0.5.0"]
                  ;; pinned transitives
-                 [org.clojure/tools.reader "1.4.2"]
+                 [org.clojure/tools.reader "1.5.0"]
                  [ring/ring-core "1.12.2"]]
   :min-lein-version "2.0.0"
   :main ^:skip-aot t.core
