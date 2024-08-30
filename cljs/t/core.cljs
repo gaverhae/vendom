@@ -2,8 +2,7 @@
   (:require [cljs.core.async :as async]
             [cljs.core.match :refer-macros [match]]
             [goog.events]
-            [reagent.core :as r]
-            [reagent.dom.client :as rdc]
+            [replicant.dom :as d]
             [taoensso.sente :as sente]))
 
 (defonce event-queue
@@ -20,13 +19,18 @@
   [:div
    [:div "Clicked: " (:counter state "not received yet")]
    [:input {:type "submit"
-            :on-click (emit [:button/clicked])
+            :on {:click (emit [:button/clicked])}
             :value "click me"}]
-   [:pre state]])
+   [:input {:type "text"
+            :name "input"
+            :value (:input state)
+            :on {:input (fn [e] ((emit [:input/value (-> e .-target .-value)]) e))}}]
+   [:div (:input state)]
+   [:pre (pr-str state)]])
 
 (defn init-state
   []
-  {})
+  {:input ""})
 
 (defn update-state
   [state event tell-server]
@@ -37,14 +41,15 @@
     [:browser/refresh] state
 
     [:button/clicked] (do (tell-server [:button/click])
-                          state)
+                          (update state :input str "!!"))
+    [:input/value v] (assoc state :input v)
     [:counter/value n] (assoc state :counter n)
 
     _ (do (prn [:client/unhandled event])
           state)))
 
 (defn start-event-loop
-  [react-root]
+  [root-element]
   (let [csrf (.. js/document
                  (getElementById "sente-csrf-token")
                  (getAttribute "data-csrf-token"))
@@ -56,7 +61,7 @@
                       ch-recv ([msg] (:event msg))
                       event-queue ([event] event))
               new-state (update-state old-state event send-fn)]
-          (rdc/render react-root [ui-root new-state])
+          (d/render root-element (ui-root new-state))
           (recur new-state))))))
 
 (defn ^:after-load reload
@@ -67,4 +72,4 @@
   js/window
   "load"
   (fn [_]
-    (start-event-loop (rdc/create-root (js/document.getElementById "app")))))
+    (start-event-loop (js/document.getElementById "app"))))

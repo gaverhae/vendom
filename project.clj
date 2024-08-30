@@ -21,11 +21,9 @@
                    :repl-options {:init-ns repl}
                    :resource-paths ["target"]
                    :clean-targets ^{:protect false} ["target"]
-                   :dependencies [[cljsjs/react "18.2.0-1"]
-                                  [cljsjs/react-dom "18.2.0-1"]
+                   :dependencies [[no.cjohansen/replicant "0.2024.08.06"]
                                   [com.bhauman/figwheel-main "0.2.18"]
                                   [com.nextjournal/beholder "1.0.2"]
                                   [org.clojure/clojurescript "1.11.132"]
-                                  [org.clojure/tools.namespace "1.5.0"]
-                                  [reagent "1.2.0"]]}}
+                                  [org.clojure/tools.namespace "1.5.0"]]}}
   :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]})
