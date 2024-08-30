@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
+cd "$DIR/.."
+
+sha=$(git log -n1 --format=%h --abbrev=8)
+commit_date=$(git log -n1 --format=%cd --date=format:%Y%m%d $sha)
+number_of_commits=$(git rev-list --count $sha)
+branch=$(git branch --show-current)
+if ! git diff-index --quiet $sha; then
+  md5=$(git ls-files | sort | xargs md5sum | md5sum | awk '{print $1}' | cut -c 1-8)
+  is_modified=-dirty-$md5
+else
+  is_modified=
+fi
+
+echo "$commit_date.$number_of_commits.$branch.$sha$is_modified"
