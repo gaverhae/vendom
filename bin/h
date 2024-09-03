@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
+cd "$DIR/.."
+
+action=$1
+target=${2:-head}
+app=vendom-$target
+remote=heroku-$target
+
+_push() (
+  heroku config:set --remote $remote VERSION=$(bin/version)
+  git push --force-with-lease $remote HEAD:refs/heads/main
+)
+
+_open() (
+  heroku open --remote $remote
+)
+
+_eco() (
+  heroku ps:scale web=1:Eco --remote=$remote
+  grep -q transactor Procfile && heroku ps:scale transactor=1:Eco --remote=$remote
+)
+
+case $action in
+  create)
+    heroku create $app
+    git remote add $remote https://git.heroku.com/$app.git
+    _push
+    _eco
+    _open
+    ;;
+  push)
+    _push
+    ;;
+  open)
+    _open
+    ;;
+  eco)
+    _eco
+    ;;
+  *)
+    echo "Unknown action: $action"
+    exit 1
+    ;;
+esac
