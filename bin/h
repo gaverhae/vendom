@@ -4,10 +4,17 @@ set -euo pipefail
 DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 cd "$DIR/.."
 
+app_base_name=vendom
+
 action=$1
-target=${2:-head}
-app=vendom-$target
-remote=heroku-$target
+
+if [ -n "${2:-}" ]; then
+  heroku_app=$app_base_name-$2
+  remote=heroku-$2
+else
+  heroku_app=$app_base_name
+  remote=heroku
+fi
 
 _push() (
   heroku config:set --remote $remote VERSION=$(bin/version)
@@ -25,8 +32,8 @@ _eco() (
 
 case $action in
   create)
-    heroku create $app
-    git remote add $remote https://git.heroku.com/$app.git
+    heroku create $heroku_app
+    git remote add $remote https://git.heroku.com/$heroku_app.git
     _push
     _eco
     _open
