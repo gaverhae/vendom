@@ -1,3 +1,4 @@
+- easy way to start cljs repl
 - run tailwind as part of go
 - sort out caching
 - add init chsk/state on client
