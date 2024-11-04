@@ -10,7 +10,7 @@
                  [ring/ring-defaults "0.5.0"]
                  ;; pinned transitives
                  [org.clojure/tools.reader "1.5.0"]
-                 [ring/ring-core "1.12.2"]]
+                 [ring/ring-core "1.13.0"]]
   :min-lein-version "2.0.0"
   :main ^:skip-aot t.core
   :target-path "target/%s"
@@ -21,7 +21,7 @@
                    :repl-options {:init-ns repl}
                    :resource-paths ["target"]
                    :clean-targets ^{:protect false} ["target"]
-                   :dependencies [[no.cjohansen/replicant "0.2024.08.06"]
+                   :dependencies [[no.cjohansen/replicant "2024.09.29"]
                                   [com.bhauman/figwheel-main "0.2.18"]
                                   [com.nextjournal/beholder "1.0.2"]
                                   [org.clojure/clojurescript "1.11.132"]
