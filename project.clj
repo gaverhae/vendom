@@ -25,6 +25,6 @@
                    :dependencies [[no.cjohansen/replicant "2025.03.27"]
                                   [com.bhauman/figwheel-main "0.2.20"]
                                   [com.nextjournal/beholder "1.0.2"]
-                                  [org.clojure/clojurescript "1.12.38"]
+                                  [org.clojure/clojurescript "1.12.42"]
                                   [org.clojure/tools.namespace "1.5.0"]]}}
   :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]})
